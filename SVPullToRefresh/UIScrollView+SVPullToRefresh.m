@@ -45,7 +45,7 @@ static CGFloat const kDefaultPullToRefreshViewHeight = 60;
 @property (nonatomic, assign) BOOL wasTriggeredByUser;
 @property (nonatomic, assign) BOOL showsPullToRefresh;
 @property (nonatomic, assign) BOOL showsDateLabel;
-@property(nonatomic, assign) BOOL isObserving;
+@property (nonatomic, assign) BOOL isObserving;
 
 - (void)resetScrollViewContentInset;
 - (void)setScrollViewContentInsetForLoading;
@@ -66,12 +66,15 @@ static char UIScrollViewPullToRefreshView;
 @dynamic pullToRefreshView, showsPullToRefresh;
 
 - (void)addPullToRefreshWithActionHandler:(void (^)(void))actionHandler position:(SVPullToRefreshPosition)position {
-    
+    [self addPullToRefreshWithHeight:kDefaultPullToRefreshViewHeight andActionHandler:actionHandler];
+}
+
+- (void)addPullToRefreshWithHeight:(CGFloat)height andActionHandler:(void (^)(void))actionHandler position:(SVPullToRefreshPosition)position {
     if(!self.pullToRefreshView) {
         CGFloat yOrigin;
         switch (position) {
             case SVPullToRefreshPositionTop:
-                yOrigin = -self.pullToRefreshHeight;
+                yOrigin = -height;
                 break;
             case SVPullToRefreshPositionBottom:
                 yOrigin = self.contentSize.height;
@@ -79,7 +82,7 @@ static char UIScrollViewPullToRefreshView;
             default:
                 return;
         }
-        SVPullToRefreshView *view = [[SVPullToRefreshView alloc] initWithFrame:CGRectMake(0, yOrigin, self.bounds.size.width, self.pullToRefreshHeight)];
+        SVPullToRefreshView *view = [[SVPullToRefreshView alloc] initWithFrame:CGRectMake(0, yOrigin, self.bounds.size.width, height)];
         view.pullToRefreshActionHandler = actionHandler;
         view.scrollView = self;
         [self addSubview:view];
@@ -88,6 +91,7 @@ static char UIScrollViewPullToRefreshView;
         view.originalBottomInset = self.contentInset.bottom;
         view.position = position;
         self.pullToRefreshView = view;
+        self.pullToRefreshView.height = height;
         self.showsPullToRefresh = YES;
     }
     
@@ -95,6 +99,11 @@ static char UIScrollViewPullToRefreshView;
 
 - (void)addPullToRefreshWithActionHandler:(void (^)(void))actionHandler {
     [self addPullToRefreshWithActionHandler:actionHandler position:SVPullToRefreshPositionTop];
+}
+
+- (void)addPullToRefreshWithHeight:(CGFloat)height andActionHandler:(void (^)(void))actionHandler;
+{
+    [self addPullToRefreshWithHeight:height andActionHandler:actionHandler position:SVPullToRefreshPositionTop];
 }
 
 - (void)triggerPullToRefresh {
@@ -136,14 +145,14 @@ static char UIScrollViewPullToRefreshView;
             CGFloat yOrigin = 0;
             switch (self.pullToRefreshView.position) {
                 case SVPullToRefreshPositionTop:
-                    yOrigin = -self.pullToRefreshHeight;
+                    yOrigin = -self.pullToRefreshView.height;
                     break;
                 case SVPullToRefreshPositionBottom:
                     yOrigin = self.contentSize.height;
                     break;
             }
             
-            self.pullToRefreshView.frame = CGRectMake(0, yOrigin, self.bounds.size.width, self.pullToRefreshHeight);
+            self.pullToRefreshView.frame = CGRectMake(0, yOrigin, self.bounds.size.width, self.pullToRefreshView.height);
         }
     }
 }
@@ -165,7 +174,7 @@ static char UIScrollViewPullToRefreshView;
 @synthesize showsPullToRefresh = _showsPullToRefresh;
 @synthesize arrow = _arrow;
 @synthesize activityIndicatorView = _activityIndicatorView;
-@synthesize pullToRefreshHeight   = _pullToRefreshHeight
+@synthesize height   = _height;
 
 @synthesize titleLabel = _titleLabel;
 @synthesize dateLabel = _dateLabel;
@@ -180,7 +189,7 @@ static char UIScrollViewPullToRefreshView;
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         self.state = SVPullToRefreshStateStopped;
         self.showsDateLabel = NO;
-        self.pullToRefreshHeight = kDefaultPullToRefreshViewHeight;
+        self.height = kDefaultPullToRefreshViewHeight;
         
         self.titles = [NSMutableArray arrayWithObjects:NSLocalizedString(@"Pull to refresh...",),
                              NSLocalizedString(@"Release to refresh...",),
@@ -379,13 +388,13 @@ static char UIScrollViewPullToRefreshView;
         CGFloat yOrigin;
         switch (self.position) {
             case SVPullToRefreshPositionTop:
-                yOrigin = -self.pullToRefreshHeight;
+                yOrigin = -self.height;
                 break;
             case SVPullToRefreshPositionBottom:
                 yOrigin = MAX(self.scrollView.contentSize.height, self.scrollView.bounds.size.height);
                 break;
         }
-        self.frame = CGRectMake(0, yOrigin, self.bounds.size.width, self.pullToRefreshHeight);
+        self.frame = CGRectMake(0, yOrigin, self.bounds.size.width, self.height);
     }
     else if([keyPath isEqualToString:@"frame"])
         [self layoutSubviews];

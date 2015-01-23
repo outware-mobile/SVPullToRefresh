@@ -21,11 +21,12 @@ typedef NS_ENUM(NSUInteger, SVPullToRefreshPosition) {
 };
 
 - (void)addPullToRefreshWithActionHandler:(void (^)(void))actionHandler;
+- (void)addPullToRefreshWithHeight:(CGFloat)height andActionHandler:(void (^)(void))actionHandler;
 - (void)addPullToRefreshWithActionHandler:(void (^)(void))actionHandler position:(SVPullToRefreshPosition)position;
 - (void)triggerPullToRefresh;
 
 @property (nonatomic, strong, readonly) SVPullToRefreshView *pullToRefreshView;
-@property (nonatomic, assign) BOOL showsPullToRefresh;
+@property (nonatomic, assign)           BOOL                showsPullToRefresh;
 
 @end
 
@@ -45,7 +46,7 @@ typedef NS_ENUM(NSUInteger, SVPullToRefreshState) {
 @property (nonatomic, strong, readonly) UILabel *subtitleLabel;
 @property (nonatomic, strong, readwrite) UIColor *activityIndicatorViewColor NS_AVAILABLE_IOS(5_0);
 @property (nonatomic, readwrite) UIActivityIndicatorViewStyle activityIndicatorViewStyle;
-@property (nonatomic, assign)    CGFloat pullToRefreshHeight;
+@property (nonatomic)           CGFloat height;
 
 @property (nonatomic, readonly) SVPullToRefreshState state;
 @property (nonatomic, readonly) SVPullToRefreshPosition position;
