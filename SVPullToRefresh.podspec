@@ -3,7 +3,7 @@ Pod::Spec.new do |spec|
   spec.version  = '0.5.1'
   spec.homepage = 'https://github.com/outware-mobile/SVPullToRefresh'
   spec.author   = { 'Sam Vermette' => 'hello@samvermette.com' }
-  spec.source   = { :git => 'https://github.com/outware-mobile/SVPullToRefresh.git'}
+  spec.source   = { :git => 'https://github.com/outware-mobile/SVPullToRefresh.git', :tag =>'0.5.1'}
   spec.description = 'SVPullToRefresh allows you to easily add pull-to-refresh ' \
                   'functionality to any UIScrollView subclass with only 1 ' \
                   'line of code. Instead of depending on delegates and/or ' \
