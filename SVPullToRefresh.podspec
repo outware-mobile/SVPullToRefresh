@@ -1,22 +1,18 @@
-Pod::Spec.new do |s|
-  s.name     = 'SVPullToRefresh'
-  s.version  = '0.5.1'
-  s.platform = :ios, '5.0'
-  s.license  = 'MIT'
-  s.summary  = 'Give pull-to-refresh to any UIScrollView with 1 line of code.'
-  s.homepage = 'https://github.com/outware-mobile/SVPullToRefresh'
-  s.author   = { 'Sam Vermette' => 'hello@samvermette.com' }
-  s.source   = { :git => 'https://github.com/outware-mobile/SVPullToRefresh.git', :tag => s.version.to_s }
-
-  s.description = 'SVPullToRefresh allows you to easily add pull-to-refresh ' \
+Pod::Spec.new do |spec|
+  spec.name     = 'SVPullToRefresh'
+  spec.version  = '0.5.1'
+  spec.homepage = 'https://github.com/outware-mobile/SVPullToRefresh'
+  spec.author   = { 'Sam Vermette' => 'hello@samvermette.com' }
+  spec.source   = { :git => 'https://github.com/outware-mobile/SVPullToRefresh.git'}
+  spec.description = 'SVPullToRefresh allows you to easily add pull-to-refresh ' \
                   'functionality to any UIScrollView subclass with only 1 ' \
                   'line of code. Instead of depending on delegates and/or ' \
                   'subclassing UIViewController, SVPullToRefresh extends ' \
                   'UIScrollView with a addPullToRefreshWithActionHandler: ' \
                   'method as well as a pullToRefreshView property.'
 
-  s.frameworks   = 'QuartzCore'
-  s.source_files = 'SVPullToRefresh/*.{h,m}'
-  s.preserve_paths  = 'Demo'
-  s.requires_arc = true
+  spec.framework   = 'QuartzCore'
+  spec.source_files = 'SVPullToRefresh/*.{h,m}'
+  spec.preserve_paths  = 'Demo'
+  spec.requires_arc = true
 end
